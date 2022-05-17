@@ -1,14 +1,12 @@
-import React from 'react'
+import React from "react";
 import "./homeP.scss";
 import Navbar from "../../components/Navbar/NavbarH";
 import SidebarH from "../../components/Sidebar/SidebarH";
-import Events from '../../UserComponents/events/Events';
-import { useState } from 'react';
-import Filter from "../../UserComponents/filter/Filter"
+import Events from "../../UserComponents/events/Events";
+import { useState } from "react";
+import Filter from "../../UserComponents/filter/Filter";
 
 function Home() {
-
-  
   // const [events, setevents] = useState("")
   // const [Eventname, setEventname] = useState("");
   // const handlechange = (e) => {
@@ -17,18 +15,18 @@ function Home() {
 
   return (
     <div className="homeP">
-      <div className="chartP ">
+      {/* <div className="chartP ">
         <SidebarH />
-      </div>
+      </div> */}
       <div className="homeContainerP">
         <Navbar />
         {/* <Filter Eventname={Eventname} handlechange={handlechange} /> */}
-          <Events  />
+        <Events />
       </div>
     </div>
-  )
+  );
 }
 
 // Events={events.filter((Event) => Event.Eventname.toUpperCase().includes(Eventname.toUpperCase()))}
 
-export default Home
+export default Home;

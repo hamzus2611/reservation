@@ -60,7 +60,10 @@ function NavbarConnect() {
               alt="Black and White Portrait of a Man"
               loading="lazy"
             />
-            <NavDropdown title="" id="navbarScrollingDropdown">
+            <NavDropdown
+              id="nav-dropdown-dark-example"
+              title="name user"
+            >
               <NavDropdown.Item href="#action3">Profile</NavDropdown.Item>
               <NavDropdown.Item href="#action4">Parametre</NavDropdown.Item>
               <NavDropdown.Divider />

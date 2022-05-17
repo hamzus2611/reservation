@@ -26,8 +26,8 @@ function EventPage() {
       CreateTicket(
         {
           Date: Date.now(),
-          id_Event: id,
-          NumPlaceReserve: optionsState
+          NumPlaceReserve: optionsState,
+          id_Event: id
         },
         token
       )
@@ -35,11 +35,12 @@ function EventPage() {
   };
   const SelectNumber = (event) => {
     event.preventDefault();
-    console.log(numval[event.target.value])
-    setoptionsState(numval[event.target.value]) 
+    const token = localStorage.getItem("token");
 
+    console.log(numval[event.target.value]);
+    setoptionsState(numval[event.target.value]);
   };
- 
+
   return (
     <div>
       <div className="homeContainerP">
@@ -49,7 +50,6 @@ function EventPage() {
             <h1> Loading</h1>
           ) : (
             <div className="image-block">
-              
               <figure>
                 <h1>The Beach</h1>
                 <img src={event.Eventimage} alt="" width="100%" height="100%" />
@@ -68,7 +68,6 @@ function EventPage() {
                   <p> {event.desc}</p>
                   <select
                     onChange={(e) => SelectNumber(e)}
-                   
                     name="num_res"
                     id="Num_res"
                   >
@@ -83,10 +82,17 @@ function EventPage() {
                     <option value="5">5</option>
                     <option value="6">6</option> */}
                   </select>
-                  <button  type="submit" onClick={handelReserv}>Reserve</button>
+                  {token ? (
+                    <button type="submit" onClick={handelReserv}>
+                      Reserve
+                    </button>
+                  ) : (
+                    <Link to={"/login"}>
+                      <button>Reserve</button>
+                    </Link>
+                  )}
                 </figcaption>
               </figure>
-              
             </div>
           )}
         </div>

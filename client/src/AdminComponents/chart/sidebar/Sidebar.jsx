@@ -12,11 +12,22 @@ import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSyst
 import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logoutUser } from "../../../redux/Action/EventAction";
 // import { DarkModeContext } from "../../../components/context/darkModeContext";
 
 // import { useContext } from "react";
 
 const Sidebar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logout = () => {
+    dispatch(logoutUser());
+    navigate("/login");
+    //  <Navigate to="/" />;
+  };
   // const { dispatch } = useContext(DarkModeContext);
   return (
     <div className="sidebar">
@@ -86,7 +97,7 @@ const Sidebar = () => {
             <AccountCircleOutlinedIcon className="icon" />
             <span>Profile</span>
           </li>
-          <li>
+          <li onClick={logout}>
             <ExitToAppIcon className="icon" />
             <span>Logout</span>
           </li>

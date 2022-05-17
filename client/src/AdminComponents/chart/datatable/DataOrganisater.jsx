@@ -12,8 +12,10 @@ const Datatable = () => {
 
   const { Loading, users, error } = useSelector((state) => state.User_Select);
   const dispatch = useDispatch()
+ const token = localStorage.getItem("token");
+
   useEffect(() => {
-    dispatch(getorganisateur())
+    dispatch(getorganisateur(token))
   }, [])
 
   const actionColumn = [

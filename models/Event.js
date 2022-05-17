@@ -8,6 +8,7 @@ const SchemaEvent = new Schema({
  desc : String,
  NumPlaceTotal: Number,
  NumPlaceRest: Number,
+ numberTickedispo:Array,
  Prix: String,
  Eventimage: String,
  id_User: {

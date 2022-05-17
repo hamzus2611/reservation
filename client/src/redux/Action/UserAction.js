@@ -1,6 +1,8 @@
 import { LOGIN, LOGIN_FAIL, LOGIN_SECCESS, REGISTER, REGISTER_FAIL, REGISTER_SECCESS, GET_CLIENT, GET_ORGANISATEUR, GET_CLIENT_SECCESS, GET_ORGANISATEUR_SECCESS, GET_CLIENT_FAIL, GET_ORGANISATEUR_FAIL, REGISTER_ORGANISATEUR, REGISTER_ORGANISATEUR_SECCESS, REGISTER_ORGANISATEUR_FAIL, REGISTER_ADMIN, REGISTER_ADMIN_SECCESS, REGISTER_ADMIN_FAIL, GET_ADMIN, GET_ADMIN_SECCESS, GET_ADMIN_FAIL } from "../ActionTypes/ActionTypes"
+import { useNavigate } from 'react-router-dom';
 
 import axios from 'axios'
+
 //Action register
 export const register = (NewUser) => async (dispatch) => {
     dispatch({
@@ -29,11 +31,20 @@ export const login = (User) => async (dispatch) => {
     try {
         let res = await axios.post("user/login", User);
         localStorage.setItem('token', res.data.token)
+        // localStorage.setItem('user', res.data.User)
+
         dispatch({
             type: LOGIN_SECCESS,
             payload: res.data
         });
+        // let navigate = useNavigate()
+        // console.log(res.data.User.UserRole)
+        // if (res.data.User.UserRole === "Admin") {
+        //     navigate('/Admin');
+        // }
+
     } catch (error) {
+        console.log(error)
         dispatch({
             type: LOGIN_FAIL,
             payload: error.response.data
@@ -42,12 +53,16 @@ export const login = (User) => async (dispatch) => {
 }
 
 // Action getClient
-export const getclient = () => async (dispatch) => {
+export const getclient = (token) => async (dispatch) => {
     dispatch({
         type: GET_CLIENT
     });
     try {
-        let res = await axios.get('/user/getclient');
+        let res = await axios.get('/user/getclient', {
+            headers: {
+                'authorization': token
+            }
+        })
         dispatch({
             type: GET_CLIENT_SECCESS,
             payload: res.data
@@ -61,12 +76,16 @@ export const getclient = () => async (dispatch) => {
 }
 
 // Action getorganisateur
-export const getorganisateur = () => async (dispatch) => {
+export const getorganisateur = (token) => async (dispatch) => {
     dispatch({
         type: GET_ORGANISATEUR
     });
     try {
-        let res = await axios.get('/user/getorganisateur')
+        let res = await axios.get('/user/getorganisateur', {
+            headers: {
+                'authorization': token
+            }
+        })
         dispatch({
             type: GET_ORGANISATEUR_SECCESS,
             payload: res.data
@@ -79,12 +98,17 @@ export const getorganisateur = () => async (dispatch) => {
     }
 }
 
-export const getAdmin = () => async (dispatch) => {
+export const getAdmin = (token) => async (dispatch) => {
     dispatch({
         type: GET_ADMIN
     });
     try {
-        let res = await axios.get('/user/getadmin')
+        let res = await axios.get('/user/getadmin'
+            , {
+                headers: {
+                    'authorization': token
+                }
+            })
         dispatch({
             type: GET_ADMIN_SECCESS,
             payload: res.data

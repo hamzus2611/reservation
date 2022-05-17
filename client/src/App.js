@@ -1,4 +1,4 @@
-import { Route,BrowserRouter, Routes} from "react-router-dom";
+import { Route, BrowserRouter, Routes } from "react-router-dom";
 import "./components/style/dark.scss";
 
 import Login from "./pages/login/Login";
@@ -18,6 +18,8 @@ import New from "./AdminPages/new/New";
 import { userInputs } from "./Admins/formSource";
 
 import { useContext } from "react";
+import OrganisateurPage from "./pages/organisateurPage/OrganisateurPage";
+import MyEvents from "./OrganisateurPages/Event/Event";
 // import { DarkModeContext } from "./components/context/darkModeContext";
 
 // import { Switch, Router } from "react-router-dom";
@@ -34,9 +36,9 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/Profile" element={<Profile />} />
         <Route path="/event/:id" element={<EventPage />} />
-         {/* render={(props) => */}
+        {/* render={(props) => */}
         {/* //   <EventPage {...props} />} */}
-        
+
 
         <Route path="/Admin/">
           <Route index element={<Home />} />
@@ -63,6 +65,17 @@ function App() {
           <Route path="Event">
             <Route index element={<Event />} />
             <Route path=":userId" element={<Single />} />
+            <Route
+              path="new"
+              element={<New inputs={userInputs} title="Add New User" />}
+            />
+          </Route>
+        </Route>
+        <Route path="/organisateur/">
+          <Route index element={<OrganisateurPage />} />
+          <Route path="Event/">
+            <Route index element={<MyEvents />} />
+            <Route path=":Events" element={<Single />} />
             <Route
               path="new"
               element={<New inputs={userInputs} title="Add New User" />}

@@ -11,7 +11,7 @@ const secret = config.get('secret');
 exports.CreateTicket = async (req, res) => {
     const { Date, NumPlaceReserve, id_Event } = await req.body;
     const token = req.headers.authorization;
-    //sconsole.log(req.headers)
+    //console.log(req.headers)
     const decodedToken = await jwt.verify(token, secret);
     const id_User = await decodedToken.id;
 
@@ -19,27 +19,34 @@ exports.CreateTicket = async (req, res) => {
     try {
         let evt = await Event.findOne({ id_Event })
         if (!evt) {
-            res.status(501).json("Vérifier l'evenement")
+            return res.status(501).json("Vérifier l'evenement")
         }
         // else if(Date <= today){
         //  res.status(301).json("L'evenement")
         // }
-        let TicketNum = (evt.NumPlaceTotal - evt.NumPlaceRest + NumPlaceReserve);
-        //const x= await (evt.NumPlaceRest.parseInt() - NumPlaceReserve.parseInt())
+
+        console.log(`nombre de place reste ${evt.NumPlaceRest}`)
+        const x = await (evt.NumPlaceRest - 2*NumPlaceReserve)
+        console.log(NumPlaceReserve)
+        console.log(`x=${x}`)
+        evt =await Event.findByIdAndUpdate(id_Event, { NumPlaceRest : x })
         console.log(evt.NumPlaceRest)
-        //let evnt = await Event.findByIdAndUpdate(id_Event, { NumPlaceRest:x  })
+        
         if (TicketNum <= 0) {
-            res.status(301).json('Les tickets sont complé')
+            return res.status(301).json('Les tickets sont complé')
+        } for (let pas = 0; pas < NumPlaceReserve; pas++) {
+
+            let NewTicket = await new ticket({
+                TicketNum: evt.numberTickedispo[0],
+                Date,
+                id_Event,
+                id_User
+            })
+            await Event.findByIdAndUpdate(id_Event, { numberTickedispo: numberTickedispo.shift() })
+
+            NewTicket.save();
         }
-        let NewTicket = await new ticket({
-            TicketNum,
-            Date,
-            NumPlaceReserve,
-            id_Event,
-            id_User
-        })
-        NewTicket.save();
-        res.send(NewTicket);
+        return res.send(NewTicket);
     } catch (error) {
         res.status(500).json({ msg: error.message })
     }

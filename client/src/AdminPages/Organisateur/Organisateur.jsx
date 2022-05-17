@@ -6,6 +6,8 @@ import DataOrganisater from "../../AdminComponents/chart/datatable/DataOrganisat
 const List = () => {
   return (
     <div className="list">
+
+      slt
       <Sidebar/>
       <div className="listContainer">
         <Navbar/>

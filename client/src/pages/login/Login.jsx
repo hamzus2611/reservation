@@ -8,7 +8,7 @@ const Login = () => {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const { loading, user , error} = useSelector((state) => state.usereducer);
+  const { loading, user, error } = useSelector((state) => state.usereducer);
   const token = localStorage.getItem("token");
 
   const handleLogin = (e) => {
@@ -16,10 +16,11 @@ const Login = () => {
     dispatch(login({ Email, Password }));
   };
 
- 
   return (
     <div>
-      {token ? (
+      {token && user.User.UserRole === "Admin" ? (
+        <Navigate to="/Admin" />
+      ) : token && user.User.UserRole === "Client" ? (
         <Navigate to="/" />
       ) : (
         <div className="body">
@@ -38,15 +39,16 @@ const Login = () => {
                 className="inputL"
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <div>{
-                error? (<div style={{color:"red"}} >
-                  wrong password or email
-                </div> ):( " ")}
-                </div>
+              <div>
+                {error ? (
+                  <div style={{ color: "red" }}>wrong password or email</div>
+                ) : (
+                  " "
+                )}
+              </div>
               <button className="buttonL">submit</button>
-              Vous n'avez pas encore de compte ? <Link to='/register'>
-               Créez-en un !
-              </Link>
+              Vous n'avez pas encore de compte ?{" "}
+              <Link to="/register">Créez-en un !</Link>
             </form>
           </div>
         </div>

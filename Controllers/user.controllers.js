@@ -1,7 +1,7 @@
 const bc = require('bcrypt')
 const user = require('../models/User');
-const config = require('config');
 var jwt = require('jsonwebtoken');
+const config = require('config');
 const secret = config.get('secret');
 const nodemailer = require('nodemailer');
 const transporter = nodemailer.createTransport({
@@ -36,7 +36,9 @@ exports.register = async (req, res) => {
     NewUser.Password = hash;
     NewUser.save();
     const payload = {
-      id: NewUser._id
+      id: NewUser._id,
+      UserRole: NewUser.UserRole
+
     }
     const token = jwt.sign(payload, secret);
     // console.log(token)
@@ -47,6 +49,7 @@ exports.register = async (req, res) => {
         lastname: Lastname,
         email: Email,
         phone: Phone,
+        role: UserRole
       }
     });
   } catch (error) {
@@ -67,13 +70,17 @@ exports.login = async (req, res) => {
     if (!validationPassword) {
       return res.status(401).json("wrong password or email");
     }
-    const payload = { id: User._id }
+    const payload = {
+      id: User._id,
+      UserRole: User.UserRole
+    }
     const token = jwt.sign(payload, secret)
 
     res.send({
       token,
       User: {
         name: User.Username,
+        UserRole: User.UserRole,
         lastname: User.Lastname,
         email: User.Email,
         phone: User.Phone,
@@ -137,22 +144,22 @@ exports.getOrganisateur = async (req, res) => {
 
 exports.getAdmin = async (req, res) => {
   try {
-    let admin = await user.find({"UserRole" : "Admin"})
+    let admin = await user.find({ "UserRole": "Admin" })
 
     let admins = [];
     for await (let i of admin) {
-      const ad ={
+      const ad = {
         _id: i._id,
-        Username : i.Username,
-        Lastname : i.Lastname,
-        Email : i.Email,
-        Phone : i.Phone
+        Username: i.Username,
+        Lastname: i.Lastname,
+        Email: i.Email,
+        Phone: i.Phone
       }
       admins.push(ad)
     }
     return res.send(admins);
   } catch (error) {
-    res.status(500).json({ msg: error.message})
+    res.status(500).json({ msg: error.message })
   }
 }
 
@@ -170,7 +177,7 @@ exports.registerOrganisateur = async (req, res) => {
     if (User) {
       return res.status(400).json("user does exist")
     }
-    let NewUser = await new user ({
+    let NewUser = await new user({
       Username,
       Lastname,
       Email,
@@ -229,20 +236,20 @@ function strRandom(o) {
 }
 
 exports.registerAdmin = async (req, res) => {
-  const {Username, Lastname, Email, Phone} = req.body
+  const { Username, Lastname, Email, Phone } = req.body
   const UserRole = "Admin"
   const passwordM = await strRandom({
-    includeUpperCase : true,
-    includeNumbers : true,
-    length : 8
+    includeUpperCase: true,
+    includeNumbers: true,
+    length: 8
   })
   const Password = passwordM
   try {
-    let User = await user.findOne({Email})
+    let User = await user.findOne({ Email })
     if (User) {
       return res.status(400).json("user does exist")
     }
-    let NewUser = await new user ({
+    let NewUser = await new user({
       Username,
       Lastname,
       Email,
@@ -272,6 +279,6 @@ exports.registerAdmin = async (req, res) => {
     });
     return res.send('Admin register')
   } catch (error) {
-    res.status(500).json({ msg: error.message})
+    res.status(500).json({ msg: error.message })
   }
 }

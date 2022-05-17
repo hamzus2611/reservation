@@ -19,7 +19,7 @@ function NavbarConnect() {
       width="100%"
       className="d-flex justify-content-around"
     >
-      <Link to={`/`}>
+      <Link to={"/"}>
         <Navbar.Brand>Reservi</Navbar.Brand>
       </Link>
 

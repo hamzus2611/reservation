@@ -4,10 +4,6 @@ const Schema = mongoose.Schema;
 const SchemaTicket = new Schema({
  TicketNum: Number,
  Date: Date,
- NumPlaceReserve :{
-  type : Number,
- default:1,
-},
  id_Event: {
   type: mongoose.Schema.Types.ObjectId,
   ref: "Event"

@@ -1,15 +1,27 @@
 const Event = require('../models/Event')
+const mongoose = require('mongoose');
+var jwt = require('jsonwebtoken');
+const config = require('config');
+const secret = config.get('secret');
+
+// import MyEvents from './../client/src/OrganisateurPages/Event/Event';
 
 
 exports.CreateEvent = async (req, res) => {
   const { Eventname, date, EventType, NumPlaceTotal, NumPlaceRest, Prix, Eventimage, id_User } = req.body;
+  let numberTickedispo = []
   try {
+    for (let index = 1; index <= NumPlaceTotal; index++) {
+      numberTickedispo.push(index);
+
+    }
     let NewEvent = await new Event({
       Eventname,
       date,
       EventType,
       NumPlaceTotal,
       NumPlaceRest,
+      numberTickedispo,
       Prix,
       Eventimage,
       id_User
@@ -51,7 +63,7 @@ exports.getevent = async (req, res) => {
 //********* get event by id***** */
 
 exports.getoneevent = async (req, res) => {
-  const { id } = req
+  const { id } = req.body.id
   try {
     let myevent = await Event.findById(req.params.id)
     console.log(req.params)
@@ -59,4 +71,31 @@ exports.getoneevent = async (req, res) => {
   } catch (error) {
     res.status(500).json({ msg: error.message })
   }
+}
+
+
+// get organisatuer events
+
+
+exports.getEventOrganisateur = async (req, res) => {
+
+  // mongoose.Types.ObjectId('4edd40c86762e0fb12000003');
+  // const { id } =mongoose.Types.ObjectId(req.params.id);
+
+  console.log(req.params.id)
+  try {
+    const token = req.params.id
+    const decodedToken = jwt.verify(token, secret);
+    console.log(decodedToken)
+    const id = decodedToken.id;
+    let MyEvent = await Event.find({
+      "id_User": id
+    })
+    return res.send(MyEvent)
+  } catch (error) {
+    res.status(500).json({ msg: error.message })
+  }
+
+
+
 }
