@@ -1,5 +1,6 @@
 const express = require('express');
-const { CreateTicket, AnnulationTicket } = require('../Controllers/ticket.controllers')
+const { CreateTicket, AnnulationTicket } = require('../Controllers/ticket.controllers');
+const isOrgan = require('../Middleware/isOrgan');
 const router = express.Router();
 
 router.post('/Create', CreateTicket );

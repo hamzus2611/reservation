@@ -63,7 +63,7 @@ exports.getevent = async (req, res) => {
 //********* get event by id***** */
 
 exports.getoneevent = async (req, res) => {
-  const { id } = req.body.id
+  
   try {
     let myevent = await Event.findById(req.params.id)
     console.log(req.params)

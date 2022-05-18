@@ -35,7 +35,6 @@ function EventPage() {
   };
   const SelectNumber = (event) => {
     event.preventDefault();
-    const token = localStorage.getItem("token");
 
     console.log(numval[event.target.value]);
     setoptionsState(numval[event.target.value]);

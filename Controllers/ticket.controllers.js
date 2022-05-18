@@ -11,7 +11,7 @@ const secret = config.get('secret');
 exports.CreateTicket = async (req, res) => {
     const { Date, NumPlaceReserve, id_Event } = await req.body;
     const token = req.headers.authorization;
-    //console.log(req.headers)
+    // console.log(req.headers)
     const decodedToken = await jwt.verify(token, secret);
     const id_User = await decodedToken.id;
 
@@ -26,27 +26,35 @@ exports.CreateTicket = async (req, res) => {
         // }
 
         console.log(`nombre de place reste ${evt.NumPlaceRest}`)
-        const x = await (evt.NumPlaceRest - 2*NumPlaceReserve)
+        const x = await (evt.NumPlaceRest - NumPlaceReserve)
         console.log(NumPlaceReserve)
         console.log(`x=${x}`)
-        evt =await Event.findByIdAndUpdate(id_Event, { NumPlaceRest : x })
+        evt = await Event.findByIdAndUpdate(id_Event, { NumPlaceRest: x })
         console.log(evt.NumPlaceRest)
-        
-        if (TicketNum <= 0) {
-            return res.status(301).json('Les tickets sont complé')
-        } for (let pas = 0; pas < NumPlaceReserve; pas++) {
 
+        if (evt.NumPlaceRest <= 0) {
+            return res.status(301).json('Les tickets sont complé')
+        }
+        for ( pas = 0; pas < NumPlaceReserve; pas++) {
+           
+            const array = await Event.findById(id_Event)
+            const array2 = await array.numberTickedispo
+
+
+            console.log(array2)
+            const array3 = await array2.shift()
+            console.log(array2)
+            
+            const updtevent = await Event.findOneAndUpdate({ _id: id_Event }, { numberTickedispo: array2 })
             let NewTicket = await new ticket({
-                TicketNum: evt.numberTickedispo[0],
+                TicketNum: updtevent.numberTickedispo[0],
                 Date,
                 id_Event,
                 id_User
             })
-            await Event.findByIdAndUpdate(id_Event, { numberTickedispo: numberTickedispo.shift() })
-
-            NewTicket.save();
+            await NewTicket.save();
         }
-        return res.send(NewTicket);
+        return res.send("ticke saved");
     } catch (error) {
         res.status(500).json({ msg: error.message })
     }

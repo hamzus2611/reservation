@@ -4,7 +4,7 @@ import { getevent } from "../../redux/Action/EventAction";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import './Events.css'
+import './Events.scss'
 
 
 function Events() {
@@ -16,10 +16,10 @@ function Events() {
   }, [])
 
   return (
-    <div className="Container">
+    <div className="Containers">
       {Loading ?
         <h1> Loading</h1> :
-        <div className="Movie-Container">
+        <div className="Movie-Containers">
           {event.map((event) => (<EventsCard key={event._id} event={event} />))}
         </div>}
     </div>

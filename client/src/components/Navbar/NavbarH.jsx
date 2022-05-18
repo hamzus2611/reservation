@@ -10,7 +10,7 @@ function Navbar()  {
   
   return (
     <div  >
-      { token ?<NavbarConnect/> :
+      { token ?<NavbarConnect /> :
       <NavbarNoConnect/>
       }
     </div>
